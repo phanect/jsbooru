@@ -9,13 +9,8 @@ body {
 }
 
 /* Menu */
-#header > h1 {
-	margin: 10px 0 0 20px;
-}
-
-menu.main {
-	padding: 0 0 0 20px;
-}
+#header > h1 { margin: 10px 0 0 20px; }
+menu.main { padding: 0 0 0 20px; }
 
 menu.main ul {
 	list-style: none;
@@ -61,17 +56,22 @@ menu.main li {
 	margin: 10px;
 }
 
-/* TAGS */
+/* Tags */
+#tags li { margin: 0; }
+#tags .wiki { margin-right: 10px; }
+#tags .name { margin-right: 5px; }
+#tags .post-count { font-size: 0.8em; }
 #tags ul {
 	list-style: none;
 	margin: 0;
 	padding: 0 0 0 0;
 }
 
-#tags li { margin: 0; }
-#tags .wiki { margin-right: 10px; }
-#tags .name { margin-right: 5px; }
-#tags .post-count { font-size: 0.8em; }
+/* View */
+#image img.limit {
+	max-width: 95%;
+	max-height: 90vh;
+}
 
 /* Thumbnails */
 .post-preview {
@@ -97,21 +97,11 @@ menu.main li {
 }
 
 /* Tag searchs */
+.reply > .title { float: left; }
+.reply > .count { float: right; }
 .reply {
 	display: inline-block;
 	width: 100%;
-}
-
-.reply > .title {
-	float: left;
-}
-
-.reply > .count {
-	float: right;
-}
-
-#footer {
-	text-align: center;
 }
 
 /* page selection */
@@ -138,6 +128,12 @@ menu.main li {
 	flex-wrap: nowrap;
 }
 
-#footer {
-	text-align: center;
+.pages a {
+	display: block;
+	text-decoration: inherit;
+	color: inherit;
+	width: 100%;
+	height: 100%;
 }
+
+#footer { text-align: center; }

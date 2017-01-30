@@ -13,8 +13,8 @@
 			<nav>
 				<menu class="main">
 					<ul>
-						<li><router-link to="/search">Posts</a></li>
-						<li><router-link to="/upload">Upload</a></li>
+						<li><router-link to="/search">Posts</router-link></li>
+						<li><router-link to="/upload">Upload</router-link></li>
 					</ul>
 				</menu>
 			</nav>
@@ -46,22 +46,26 @@
 				class="post-preview"
 				itemscope
 				itemtype="http://schema.org/ImageObject"
-				v-bind:id="'post_' + image.id"
-				v-bind:data-id="image.id">
-			<a @click="selectImage()">
+				:id="'post_' + image.id"
+				:data-id="image.id">
+			<router-link :to="'/view/' + image.id">
 				<img
 						itemprop="thumbnailUrl"
 							:src="image.thumbnail"
 							:alt="image.tags"
 							:title="image.tags" />
-			</a>
+			</router-link>
 		</article>
 	</script>
 
 	<script type="text/x-template" id="pagebox-template">
 		<nav class="pages">
 			<ul>
-				<li v-for="page in pages" :class="{ selected: page.selected }" @click="selectPage(page)">{{page.identifier}}</li>
+				<li v-for="page in pages" :class="{ selected: page.selected }">
+					<router-link :to="'/search?s=' + page.value + '&q=' + currTags">
+						{{page.identifier}}
+					</router-link>
+				</li>
 			</ul>
 		</nav>
 	</script>
@@ -89,9 +93,9 @@
 			<h2>Tags</h2>
 			<ul>
 				<li v-for="tag in tags">
-					<a class="wiki" v-bind:href="tag.wiki">?</a>
-					<a class="name" @click="searchTag(tag.name)">{{tag.name}}</a>
-					<span class="post-count">{{tag.count}}</span>
+					<a :class="['wiki', 'tag', tag.type]" :href="tag.wiki">?</a>
+					<a :class="['name', 'tag', tag.type]" @click="searchTag(tag.name)">{{tag.name}}</a>
+					<span :class="['post-count', 'tag', tag.type]">{{tag.count}}</span>
 					<a v-if="allowDelete" class="delete" @click="deleteTag(tag.name)">-</a>
 				</li>
 			</ul>
@@ -127,7 +131,7 @@
 			<editable-text unknown="UNKNOWN"
 					title="Uploader: " :value="image.user" :url="'/user/' + image.user"
 					:canEdit="true" @edit="editUser"/>
-			</div>
+			<div><a :href="image.url" target="_blank">Download picture</a></div>
 		</section>
 	</script>
 
@@ -135,7 +139,7 @@
 	<script type="text/x-template" id="view-template">
 		<div id="content">
 			<section id="image">
-				<img v-if="image" v-bind:src="image.url" />
+				<img v-if="image" :src="image.url" :class="{ limit: limitSize }" @click="toggleSizeLimit" />
 			</section>
 			<aside>
 				<search-box @select="setRequest"></search-box>
@@ -154,9 +158,9 @@
 		<div id="content">
 			<section id="search">
 				<h2>{{count}} results</h2>
-				<page-box @select="selectPage" :pageCount="20" :start="pos" :count="count" />
-				<image-thumbnail @select="selectImage" v-for="image in images" :image="image" />
-				<page-box @select="selectPage" :pageCount="20" :start="pos" :count="count" />
+				<page-box :pageCount="20" :start="pos" :count="count" :currTags="currTags" />
+				<image-thumbnail v-for="image in images" :image="image" />
+				<page-box :pageCount="20" :start="pos" :count="count" :currTags="currTags" />
 			</section>
 			<aside>
 				<search-box @select="setRequest" :current="currTags"></search-box>
@@ -180,6 +184,7 @@
 	</script>
 
 <script src="/lib/vue.js"></script>
+<script src="/lib/vue-resource.min.js"></script>
 <script src="/lib/vue-router.js"></script>
 <script src="/lib/vue2-autocomplete.js"></script>
 

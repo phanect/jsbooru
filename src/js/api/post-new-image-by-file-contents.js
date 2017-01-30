@@ -18,9 +18,14 @@ module.exports = function(req, res) {
             database.insertPicture({
                 url: '/img/' + newFile,
                 tags: [],
-            }, function(id) {
+            }).then((id) => {
                 console.log(`Assigned ID : ${id}`);
                 res.redirect(`/#/view/${id}`);
+            })
+            .catch((e) => {
+                console.error(`Creating an ID for the new uploaded picture failed.`);
+                console.error(e.message);
+                res.sendStatus(500);
             });
         });
     })

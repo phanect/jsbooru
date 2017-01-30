@@ -13,8 +13,9 @@ app.use(bodyParser.json());
 app.use(busboy());
 
 if(!confHelper.initConfig()) {
-    console.log("There was an error reading the configuration file.");
-    process.exit(0);
+    console.error("Server error : configuration file loading failed without recovery.");
+    console.info("There was an error reading the configuration file.");
+    process.exit(-1);
 }
 const config = confHelper.config;
 
@@ -25,9 +26,10 @@ app.use("/api", require("./api"));
 routes.init(app);
 
 app.listen(config.port, function() {
-    console.log(`Started app on port ${config.port}`);
+    console.info(`Started app on port ${config.port}`);
 }).on("error", function(err) {
+    console.info("Error opening the server. Are you sure the given port is valid ?");
     console.error(`Server error : ${err.message}`);
-    console.log("Error opening the server. Are you sure the given port is valid ?");
-    process.exit(0);
+    console.error(err);
+    process.exit(-1);
 });
