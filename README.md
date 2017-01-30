@@ -4,7 +4,7 @@
 
 ## Description
 
-JSBooru is a project to recreate a NodeJS version of the popular Booru websites starting from Danbooru onwards.
+JSBooru is a project to recreate a NodeJS version of the popular Booru websites, such as Danbooru.
 
 It's not intended for scalability, and will be optimized for small Unix environments. These requirements will probably change.
 
@@ -14,20 +14,26 @@ This project was originally made for a raspberry based Booru board.
 
 Here is a list of feature we would want to integrate to JSBooru - starting from the most obvious ones to the most advanced !
 
-- [X] Upload pictures, picture info (such as source)
-- [X] Add tags to pictures
-- [X] Search by tags
-- [ ] Tag categories
-- [ ] User login and options (exclude tags, disable comments, ...)
-- [ ] Score/favourites sytem and related searches
-- [ ] Comment system
-- [ ] Notes/translations system
-- [ ] Wiki & Tag definitions
-- [ ] Administration (flags, appeals, user management, image management)
-- [ ] Board API
-- [ ] Neverending scrolling
-- [ ] Customizable board theme
-- [ ] User themes
+- [X] Phase 1
+  - [X] Upload pictures, picture info (such as source)
+  - [X] Add tags to pictures
+  - [X] Search by tags
+- Phase 2
+  - [ ] User login and options (exclude tags, disable comments, ...)
+  - [ ] Score/favourites system
+- Phase 3
+  - [ ] Comment system
+  - [ ] Notes/translations system
+  - [ ] Wiki & Tag definitions
+- Phase 4
+  - [ ] Administration (flags, appeals, user management, image management)
+- Extra features
+  - [ ] Tag categories
+  - [ ] Related pictures
+  - [ ] Neverending scrolling
+  - [ ] Server-wide customizable board theme
+  - [ ] User theme choice
+  - [ ] Board API
 
 Here are some other features that we don't want to implement
 
@@ -37,34 +43,24 @@ Feel free to propose other features as issues ! We will add them to the feature 
 
 ## Getting started - installing
 
-No releases are currently available. Check back later !
+First step, ensure that you have [NodeJS v.6.9.4 (LTS) or higher](https://nodejs.org/) installed on your machine.
 
-## Configuration
+For raspberry, you can follow [this tutorial](http://thisdavej.com/upgrading-to-more-recent-versions-of-node-js-on-the-raspberry-pi/).
 
-Server-wide configuration is available using the `config.json` file at the root.
-An example file is given as `config.default.json`
+Then, execute the following commands
+```bash
+git clone https://github.com/Dexesttp/jsbooru.git
+cd jsbooru
+npm install
+npm start
+```
 
-The end goal is to have server-wide conigurations such as :
+That's it ! Your server is now running on [localhost:3000](http://localhost:3000).
 
-- [X] Where the files are stored.
-- [ ] The need for user login to do some actions (post pictures, add tags, add notes, write comments).
-- [ ] Whether to self-host or remote-host the files with things like imgur.
-- [ ] Default user/admin options, so you don't have to login on your own server.
-- [ ] API management (on/off features, manage tokens, throttle...)
+### Configuration
 
-In addition, user configs such as :
-
-- [ ] Neverending board scroll
-- [ ] Exclude tags
-- [ ] Show/hide comments
-
-As well as administrative features :
-
-- [ ] Image management (delete pictures)
-- [ ] User management (promotion, ban)
-- [ ] Promotion levels (e.g. community moderator, moderator, administrator)
-
-will be added via config pages.
+Server-wide configuration is available using the `config.json` file at the root.  
+An example file is given as `config.default.json`. Copy it with `cp config.default.json config.json` and edit the file to your likings.
 
 ### Adding themes
 
@@ -102,6 +98,30 @@ The goal is to use 100% Javascript/NodeJS librairies.
     - [vue2-autocomplete](https://github.com/BosNaufal/vue2-autocomplete) adds autocompletion for search results.
 
 This list is very likely to expand or evolve as the project grows.
+
+## Configuration goals
+
+The end goal is to have server-wide conigurations such as :
+
+- [X] Where the files are stored.
+- [ ] The need for user login to do some actions (post pictures, add tags, add notes, write comments).
+- [ ] Whether to self-host or remote-host the files with things like imgur.
+- [ ] Default user/admin options, so you don't have to login on your own server.
+- [ ] API management (on/off features, manage tokens, throttle...)
+
+In addition, user configs such as :
+
+- [ ] Neverending board scroll
+- [ ] Exclude tags
+- [ ] Show/hide comments
+
+As well as administrative features :
+
+- [ ] Image management (delete pictures)
+- [ ] User management (promotion, ban)
+- [ ] Promotion levels (e.g. community moderator, moderator, administrator)
+
+will be added via config pages.
 
 ## License
 
