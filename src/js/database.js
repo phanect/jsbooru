@@ -1,5 +1,6 @@
 const Engine = require("tingodb")();
 const config = require("./config").config;
+const toStartByRegex = require("./utils").toStartByRegex;
 
 const collectionNames = {
     images: "pictures",
@@ -52,6 +53,22 @@ exports.insertPicture = function(pictureData) {
             resolve(result[0]._id);
         });
     })
+}
+
+// Pure select
+
+/**
+ * Get the list of pictures.
+ * @returns {Promise<any[]>} the picture list.
+ */
+exports.getPictures = function() {
+    return new Promise((resolve, reject) => {
+        exports.images.find()
+        .toArray(function(err, result) {
+            if(err) { reject(err); return; }
+            resolve(result);
+        });
+    });
 }
 
 // Pure update
@@ -148,15 +165,16 @@ exports.getTagData = function(tagName) {
  * @return {Promise<any[]>} the promise of the matches.
  */
 exports.getTagsFromPartialTagName = function(tagName) {
-    return new Promise((resolve, reject) => {
-        const cleanTagName = tagName.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    return toStartByRegex(tagName)
+    .then((expr) =>
+    new Promise((resolve, reject) => {
         exports.tags.find(
-            {name: { $regex: new RegExp(`^${cleanTagName}`) } }
+            {name: { $regex: expr } }
         ).toArray(function(err, result) {
             if(err) { reject(err); return; }
             resolve(result);
         });
-    });
+    }));
 }
 
 /**

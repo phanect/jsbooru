@@ -1,11 +1,16 @@
 const database = require("../database");
+const encode = require("../utils").encode;
+
+function getUniqueTags(query) {
+    var usTags = (query === "" || query === "*")
+        ? []
+        : tags.filter((i, idx, arr) => { return arr.indexOf(i) === idx; })
+    return tags = usTags.map(tag => encode(tag));
+}
 
 module.exports = function(req, res) {
     const start = +req.query.s || 0;
-    const tags = req.query.q ? req.query.q.split(" ") : [];
-    const uniqueTags = (req.query.q === "" || req.query.q === "*")
-        ? []
-        : tags.filter((i, idx, arr) => { return arr.indexOf(i) === idx; });
+    const uniqueTags = getUniqueTags(req.query.q);
 
     database.getPicturesByTag(uniqueTags, start, 20)
     .then((pics) =>
