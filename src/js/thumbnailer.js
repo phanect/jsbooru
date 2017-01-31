@@ -5,18 +5,18 @@ const config = require("./config").config;
 
 /**
  * Creates a thumbnail for the given image.
- * @param {string} fileName the image file name.
+ * @param {string} absoluteFileName the absolute image file name.
  * @return {Promise<string>} a promise of the thumbnail hash.
  */
-exports.createThumbnail = function(fileName) {
+exports.createThumbnail = function(absoluteFileName) {
 	return jimp.read(
-		path.resolve(config.imageFolder, fileName)
+		absoluteFileName
 	).then((image) => {
 		const w = image.bitmap.width;
 		const h = image.bitmap.height;
 		const thumbnailPath = path.resolve(
 			config.thumbnailFolder,
-			path.basename(fileName, path.extname(fileName)) + ".jpg"
+			path.basename(absoluteFileName, path.extname(absoluteFileName)) + ".jpg"
 		);
 		return new Promise(function(resolve, reject) {
 			image.resize(
@@ -24,15 +24,13 @@ exports.createThumbnail = function(fileName) {
 				w <= h ? 154 : jimp.AUTO,
 				jimp.RESIZE_BICUBIC
 			);
-			console.log(image);
-			console.log(thumbnailPath);
 			image.write(thumbnailPath,
 			function(err) {
 				if(err) {
 					reject(err);
 					return;
 				}
-        		console.log(`Created thumbnail : ${thumbnailPath}`);
+        		console.info(`Created thumbnail : ${thumbnailPath}`);
 				resolve(image.hash());
 			});
 		});
