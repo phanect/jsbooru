@@ -234,7 +234,7 @@ exports.getPicturesByTag = function(tagNames, skip, limit) {
     return new Promise((resolve, reject) => {
         exports.images.find(
             { tags: { $all: tagNames } },
-            { _id: 1, url: 1, tags: 1 },
+            { _id: 1, url: 1, thumbnail: 1, tags: 1 },
             {
                 skip: skip,
                 limit: limit,

@@ -86,6 +86,9 @@ The goal is to use 100% Javascript/NodeJS librairies.
   - The idea is to have all the TinyDB initialization part in a file, and to switch the file with their MongoDB equivalents when needed.
   - Note : as the database would quickly become the bottleneck of such a project, switching to MongoDB is something that would be advisable after a given user count.
   - As such, there might be an already created MongoDB implementation hidden behind a server config down the line.
+- [Jimp](https://github.com/oliver-moran/jimp)
+  - Image manipulation in Javascript.
+  - Sadly, it doesn't handle all the file formats we would allow, but it certainly does the job for png, jpg and bmp files.
 - [Express](http://expressjs.com/)
   - ExpressJS is THE reference for NodeJS servers.
   - It is agremented of several components to handle data:
@@ -94,6 +97,7 @@ The goal is to use 100% Javascript/NodeJS librairies.
 - [VueJS](http://vuejs.org/)
   - VueJS is one of the rising front-end presenters in the market.
   - It is agremented of several components for ease-of-use.
+    - [vue-resource](https://github.com/pagekit/vue-resource) Easier HTTP calls, certainly beats using plain `XMLHttpRequest`.
     - [vue-router](https://router.vuejs.org/) adds page and hstory (back button) management to VueJS.
     - [vue2-autocomplete](https://github.com/BosNaufal/vue2-autocomplete) adds autocompletion for search results.
 

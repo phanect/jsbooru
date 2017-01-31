@@ -1,6 +1,7 @@
 {
 	"database": "database",
 	"imageFolder": "images",
+	"thumbnailFolder": "thumb",
 	"staticFolder": "public",
 	"port": "3000"
 }

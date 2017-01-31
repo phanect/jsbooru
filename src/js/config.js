@@ -5,6 +5,7 @@ const config = {
     database: "",
     imageFolder: "",
     staticFolder: "",
+	thumbnailFolder: "",
     port: 8000,
 };
 
@@ -37,6 +38,7 @@ exports.initConfig = function(extConfig) {
     config.database = path.resolve(__dirname, "../../", extConfig.database || "database");
     config.imageFolder = path.resolve(__dirname, "../../", extConfig.imageFolder || "images");
     config.staticFolder = path.resolve(__dirname, "../../", extConfig.staticFolder || "public");
+    config.thumbnailFolder = path.resolve(__dirname, "../../", extConfig.thumbnailFolder || "thumb");
     config.port = extConfig.port || 3000;
     // Check access permissions
     if(!checkAccess(config.database)) {
@@ -44,11 +46,15 @@ exports.initConfig = function(extConfig) {
         return false;
     }
     if(!checkAccess(config.imageFolder)) {
-        console.error(`The image folder ${config.database} can't be accessed. Ensure that the folder is created and that the user has enough permissions to access it.`);
+        console.error(`The image folder ${config.imageFolder} can't be accessed. Ensure that the folder is created and that the user has enough permissions to access it.`);
         return false;
     }
     if(!checkAccess(config.staticFolder)) {
-        console.error(`The public folder ${config.database} can't be accessed. Ensure that the folder is created and that the user has enough permissions to access it.`);
+        console.error(`The public folder ${config.staticFolder} can't be accessed. Ensure that the folder is created and that the user has enough permissions to access it.`);
+        return false;
+    }
+    if(!checkAccess(config.thumbnailFolder)) {
+        console.error(`The thumbnail folder ${config.thumbnailFolder} can't be accessed. Ensure that the folder is created and that the user has enough permissions to access it.`);
         return false;
     }
     return true;
