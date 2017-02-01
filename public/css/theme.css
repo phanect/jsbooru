@@ -44,6 +44,8 @@ menu.main a:hover {
 .tag { color: white; }
 .tag.all-type { color: lightblue; }
 .tag.no-type { color: lightblue; }
+.tag.author { color: purple; }
+.tag.character { color: darkgreen; }
 
 /* Page selection */
 .pages li {

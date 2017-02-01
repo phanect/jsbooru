@@ -4,6 +4,7 @@ module.exports = function(req, res) {
     const imageID = req.params.id;
     const tagName = req.params.tagname;
     database.insertTagOnPicture(imageID, tagName)
+    .then(_ => database.updateTagCounts())
     .then(_ => { res.sendStatus(200); })
     .catch((e) => {
         console.error(`Adding tag ${tagName} on picture ${imageID} failed.`);

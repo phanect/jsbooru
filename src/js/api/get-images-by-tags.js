@@ -20,7 +20,7 @@ module.exports = function(req, res) {
                 .map(tag => 
                     database.getTagData(tag)
                     .then((data) =>
-                        database.getCountByTagList(tag)
+                        database.getTagCount(tag)
                         .then((count) => ({
                             name: tag,
                             type: data.type || "no-type",

@@ -22,12 +22,12 @@ module.exports = function(req, res) {
     }
     database.getTagData(tagName)
     .then((data) =>
-        database.getCountByTagList(tagList)
+        database.getTagCount(tagName)
         .then((count) => {
             res.send({
                 name: tagName,
-                type: data.type || "no-type",
-                count: count,
+                type: (data && data.type) || "no-type",
+                count: count || 0,
             });
         })
     )

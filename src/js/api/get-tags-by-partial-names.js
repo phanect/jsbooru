@@ -43,7 +43,7 @@ module.exports = function(req, res) {
                 database.getTagData(tag.name)
                 .then((data) =>
                     database
-                    .getCountByTagList(tag.name)
+                    .getTagCount(tag.name)
                     .then((count) => ({
                         name: tag.name,
                         type: data.type || "no-type",

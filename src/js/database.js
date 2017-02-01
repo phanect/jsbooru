@@ -5,6 +5,8 @@ const toStartByRegex = require("./utils").toStartByRegex;
 const collectionNames = {
     images: "pictures",
     tags: "tags",
+    tagcounts: "tag_counts",
+    tagwiki: "tag_wiki",
 }
 
 exports.init = function() {
@@ -14,10 +16,18 @@ exports.init = function() {
         if(err) throw new Error("Could not initialize images database");
         db.createCollection(collectionNames.tags, function(err, tags) {
             if(err) throw new Error("Could not initialize tags database");
-            exports.images = images;
-            exports.tags = tags;
+            db.createCollection(collectionNames.tagcounts, function(err, tagcounts) {
+                if(err) throw new Error("Could not initialize tag_counts database");
+                if(err) throw new Error("Could not initialize tags database");
+                db.createCollection(collectionNames.tagwiki, function(err, tagwiki) {
+                    if(err) throw new Error("Could not initialize tag_wiki database");
+                    exports.images = images;
+                    exports.tags = tags;
+                    exports.tagcounts = tagcounts;
+                    exports.tagwiki = tagwiki;
+                });
+            });
         });
-
     });
 }
 
@@ -41,7 +51,7 @@ exports.insertTag = function(tagName) {
 
 /**
  * Inserts a new picture based on the picture data.
- * @param {any} the picture data to insert
+ * @param {any} pictureData the picture data to insert
  * @return {Promise<string>} the inserted picture's ID.
  */
 exports.insertPicture = function(pictureData) {
@@ -53,6 +63,27 @@ exports.insertPicture = function(pictureData) {
             resolve(result[0]._id);
         });
     })
+}
+
+/**
+ * Insert a new tag in the database.
+ * @param {string} tagName the tag name.
+ * @param {string} wiki the wki entry.
+ * @return {Promise<any>} a promise of the result.
+ */
+exports.insertTagWiki = function(tagName, wiki) {
+    return new Promise((resolve, reject) => {
+        exports.tagwiki.insert(
+            {
+                name: tagName,
+                wiki: wiki,
+                score: 0,
+            },
+        function(err, result) {
+            if(err) { reject(err); return; }
+            resolve(result);
+        });
+    });
 }
 
 // Pure select
@@ -71,6 +102,59 @@ exports.getPictures = function() {
     });
 }
 
+/**
+ * Get the data for a given tag.
+ * @return {Promise<any>} the promise of the tag data.
+ */
+exports.getTagData = function(tagName) {
+    return new Promise((resolve, reject) => {
+        exports.tags.findOne(
+            { name: tagName },
+        function(err, result) {
+            if(err) { reject(err); return; }
+            resolve(result);
+        });
+    });
+}
+
+/**
+ * Get the tag count for an unique tag.
+ * @param {string} tagName the name of the tag to retrieve the count for.
+ * @return {Promise<number>} a promise on the count.
+ */
+exports.getTagCount = function(tagName) {
+    return new Promise((resolve, reject) => {
+        exports.tagcounts.findOne(
+            { name: tagName },
+            { count: 1 },
+        function(err, result) {
+            if(err) { reject(err); return; }
+            resolve(result && result.count);
+        });
+    });
+}
+
+/**
+ * Get the tag count for an unique tag.
+ * @param {string} tagName the name of the tag to retrieve the count for.
+ * @return {Promise<number>} a promise on the count.
+ */
+exports.getTagWiki = function(tagName) {
+    return new Promise((resolve, reject) => {
+        exports.tagwiki.find(
+            { name: tagName },
+            { author: 1, wiki: 1, score: 1 }
+        ).toArray(function(err, result) {
+            if(err) { reject(err); return; }
+            resolve(result.map(r => ({
+                author: r.author,
+                entry: r.count,
+                score: r.score
+            })));
+        });
+    });
+}
+
 // Pure update
 
 /**
@@ -84,7 +168,7 @@ exports.updateTag = function(tagName, tagData) {
         exports.tags.update(
             { name: tagName },
             { $set: tagData },
-        function(error, result) {
+        function(err, result) {
             if(err) { reject(err); return; }
             resolve(result);
         });
@@ -144,21 +228,6 @@ exports.deletePicture = function(pictureID) {
 }
 
 // Advanced
-
-/**
- * Get the data for a given tag.
- * @return {Promise<any>} the promise of data.
- */
-exports.getTagData = function(tagName) {
-    return new Promise((resolve, reject) => {
-        exports.tags.find(
-            {name: tagName }
-        ).toArray(function(err, result) {
-            if(err) { reject(err); return; }
-            resolve(result);
-        });
-    });
-}
 
 /**
  * Get the tags that begins by the given string.
@@ -278,4 +347,34 @@ exports.getCountByTagList = function(tagList) {
             resolve(count);
         });
     })
+}
+
+exports.updateTagCounts = function() {
+    return new Promise((resolve, reject) => {
+        exports.tags.find(
+            {}, { name: 1 }
+        ).toArray(function(err, result) {
+            if(err) { reject(err); return; }
+            resolve(result.map(tag => tag.name));
+        });
+    })
+    .then((array) => Promise.all(array.map(
+        tagName => new Promise((resolve, reject) => {
+            exports.images.count(
+                { tags: { $all: [tagName] } },
+            function(err, count) {
+                if(err) { reject(err); return; }
+                resolve(count);
+            });
+        }).then((tagCount) => new Promise((resolve, reject) => {
+            exports.tagcounts.update(
+                { name: tagName },
+                { name: tagName, count: tagCount },
+                {upsert: true},
+            function(err, result) {
+                if(err) { reject(err); return; }
+                resolve(result);
+            });
+        }))
+    )));
 }
