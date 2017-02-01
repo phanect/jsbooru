@@ -4,8 +4,8 @@ const encode = require("../utils").encode;
 function getUniqueTags(query) {
     var usTags = (query === "" || query === "*")
         ? []
-        : tags.filter((i, idx, arr) => { return arr.indexOf(i) === idx; })
-    return tags = usTags.map(tag => encode(tag));
+        : query.split(" ").filter((i, idx, arr) => { return arr.indexOf(i) === idx; })
+    return usTags.map(tag => encode(tag));
 }
 
 module.exports = function(req, res) {
