@@ -257,8 +257,8 @@ exports.insertTagOnPicture = function(pictureID, tagName) {
         new Promise((resolve, reject) => {
             exports.tags.update(
                 { name: tagName },
-                { name: tagName },
-                {upsert: true},
+                { $set: {name: tagName} },
+                { upsert: true },
             function(err, result) {
                 if(err) { reject(err); return; }
                 resolve(result);
@@ -312,15 +312,15 @@ exports.getPictureData = function(pictureID) {
 
 /**
  * Get part of the picture list that matches the given tag.
- * @param {string[]} tagNames the tag names.
+ * @param {string[]} tagList the tag names.
  * @param {number} skip the number of items to skip.
  * @param {number} limit the item limit.
  * @returns {Promise<any[]>} the promise of data.
  */
-exports.getPicturesByTag = function(tagNames, skip, limit) {
+exports.getPicturesByTag = function(tagList, skip, limit) {
     return new Promise((resolve, reject) => {
         exports.images.find(
-            { tags: { $all: tagNames } },
+            { tags: { $all: tagList } },
             { _id: 1, url: 1, thumbnail: 1, tags: 1 },
             {
                 skip: skip,
@@ -349,6 +349,10 @@ exports.getCountByTagList = function(tagList) {
     })
 }
 
+/**
+ * Update the tag count for all tags.
+ * @returns {Promise<any>} the promise of the updated count. 
+ */
 exports.updateTagCounts = function() {
     return new Promise((resolve, reject) => {
         exports.tags.find(
@@ -358,23 +362,36 @@ exports.updateTagCounts = function() {
             resolve(result.map(tag => tag.name));
         });
     })
-    .then((array) => Promise.all(array.map(
-        tagName => new Promise((resolve, reject) => {
-            exports.images.count(
-                { tags: { $all: [tagName] } },
-            function(err, count) {
-                if(err) { reject(err); return; }
-                resolve(count);
-            });
-        }).then((tagCount) => new Promise((resolve, reject) => {
-            exports.tagcounts.update(
-                { name: tagName },
-                { name: tagName, count: tagCount },
-                {upsert: true},
-            function(err, result) {
-                if(err) { reject(err); return; }
-                resolve(result);
-            });
-        }))
-    )));
+    .then(
+        (tagList) => Promise.all(
+            tagList.map(
+                (tagName) => exports.updateTagCount(tagName)
+            )
+        )
+    );
+}
+
+/**
+ * Update the tag count for the given tag.
+ * @param {string} tagName the tag name to count
+ * @returns {Promise<any>} the promise of the updated count. 
+ */
+exports.updateTagCount = function(tagName) {
+    return  new Promise((resolve, reject) => {
+        exports.images.count(
+            { tags: {$all: [tagName]} },
+        function(err, count) {
+            if(err) { reject(err); return; }
+            resolve(count);
+        });
+    }).then((tagCount) => new Promise((resolve, reject) => {
+        exports.tagcounts.update(
+            { name: tagName },
+            { name: tagName, count: tagCount },
+            {upsert: true},
+        function(err, result) {
+            if(err) { reject(err); return; }
+            resolve(result);
+        });
+    }));
 }
