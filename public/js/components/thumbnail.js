@@ -1,13 +1,13 @@
 "use strict";
 
-Vue.component('image-thumbnail', {
-    template: "#thumbnail-template",
-    props: {
-        image: Object,
+Vue.component("image-thumbnail", {
+  props: {
+    image: Object,
+  },
+  methods: {
+    selectImage: function() {
+      this.$emit("select", String(this.image.id));
     },
-    methods: {
-        selectImage: function() {
-            this.$emit('select', String(this.image.id));
-        }
-    }
+  },
+  template: "#thumbnail-template",
 });

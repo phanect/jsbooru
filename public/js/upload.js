@@ -1,5 +1,5 @@
 "use strict";
 
-var Upload = Vue.component('main-upload', {
-    template: "#upload-template"
+const Upload = Vue.component("main-upload", {
+  template: "#upload-template",
 });

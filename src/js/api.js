@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require("express");
 const router = express.Router();
 
@@ -21,12 +23,12 @@ router.post("/clean/tag", require("./api/post-clean-tags"));
 
 const postByUrl = require("./api/post-new-image-by-url");
 const postByFile = require("./api/post-new-image-by-file-contents");
-router.post("/image", function(req, res) {
-    if(req.body.url) {
-        postByUrl(req, res);
-        return;
-    }
-    postByFile(req, res);
+router.post("/image", (req, res) => {
+  if(req.body.url) {
+    postByUrl(req, res);
+    return;
+  }
+  postByFile(req, res);
 });
 
 // DELETE
