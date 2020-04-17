@@ -2,9 +2,6 @@
 
 const router = new VueRouter({
   routes: [
-    { path: "/view/:id", component: Vue.component("main-view") },
-    { path: "/search", component: Vue.component("main-search") },
-    { path: "/upload", component: Vue.component("main-upload") },
     { path: "/", redirect: "/search" },
   ],
 });

@@ -5,7 +5,6 @@ const busboy = require("connect-busboy");
 const express = require("express");
 
 const confHelper = require("./config");
-const routes = require("./routes");
 const database = require("./database");
 
 const app = express();
@@ -24,7 +23,6 @@ database.init();
 app.use("/img", express.static(config.imageFolder));
 app.use("/thumb", express.static(config.thumbnailFolder));
 app.use("/api", require("./api"));
-routes.init(app);
 
 app.listen(config.port, () => {
   console.info(`Started app on port ${config.port}`);
