@@ -43,7 +43,7 @@ module.exports = function(req, res) {
     const newFile = urlID + extension;
     const newFileAbsolute = path.resolve(config.imageFolder, newFile);
     console.info(`Added file : ${newFileAbsolute}`);
-    fstream = fs.createWriteStream(newFileAbsolute);
+    const fstream = fs.createWriteStream(newFileAbsolute);
     file.pipe(fstream);
     fstream.on("close", () => {
       thumb.createThumbnail(newFileAbsolute)
