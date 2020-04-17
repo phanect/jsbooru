@@ -1,3 +1,45 @@
-*.git/
-/node_modules/
+#
+# Project-specific
+#
 /config.json
+
+#
+# System
+#
+
+# Logs
+logs/
+*.log
+
+# PIDs
+*.pid
+*.seed
+*.pid.lock
+pids
+
+# File manager configs
+.directory
+Thumbs.db
+*.DS_Store
+
+#
+# JavaScript
+#
+# NPM
+.npm/
+node_modules/
+npm-debug.log*
+
+# Node.js
+.node_repl_history
+
+# Yarn
+.yarn-integrity
+yarn-debug.log*
+yarn-error.log*
+
+# npm is the package manager for this project.
+yarn.lock
+
+# ESLint
+.eslintcache

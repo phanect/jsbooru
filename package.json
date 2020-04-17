@@ -12,7 +12,8 @@
   "main": "src/js/server.js",
   "scripts": {
     "start": "node src/js/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext=.js,.ts,.vue ."
   },
   "license": "MIT",
   "dependencies": {
@@ -26,6 +27,8 @@
     "tingodb": "^0.5.1"
   },
   "devDependencies": {
-    "eslint": "^3.14.1"
+    "@phanect/eslint-plugin": "latest",
+    "eslint": "latest",
+    "eslint-plugin-nuxt": "latest"
   }
 }
