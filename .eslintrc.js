@@ -19,5 +19,16 @@ module.exports = {
         node: true,
       },
     },
+    {
+      files: [ "modules/frontend/**/*.vue", "modules/frontend/**/*.js" ],
+      extends: [
+        "plugin:@phanect/vue",
+        "plugin:nuxt/recommended",
+      ],
+      parserOptions: {
+        sourceType: "module",
+      },
+      plugins: [ "nuxt" ],
+    },
   ],
 };
