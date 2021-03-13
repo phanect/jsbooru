@@ -1,0 +1,34 @@
+{
+  "name": "@phanect/museum",
+  "version": "0.1.0",
+  "description": "A package manager for assets",
+  "author": "Jumpei Ogawa <phanective@gmail.com>",
+  "contributors": [
+    "DexesTTP (https://github.com/Dexesttp)"
+  ],
+  "repository": {
+    "url": "https://github.com/phanect/museum.git"
+  },
+  "main": "src/js/server.js",
+  "scripts": {
+    "start": "node --unhandled-rejections=strict src/js/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext=.js,.ts,.vue ."
+  },
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "busboy": "^0.2.14",
+    "connect-busboy": "0.0.2",
+    "express": "^4.14.0",
+    "html-entities": "^1.2.0",
+    "jimp": "^0.2.27",
+    "mz": "^2.6.0",
+    "tingodb": "^0.5.1"
+  },
+  "devDependencies": {
+    "@phanect/eslint-plugin": "latest",
+    "eslint": "latest",
+    "eslint-plugin-nuxt": "latest"
+  }
+}
