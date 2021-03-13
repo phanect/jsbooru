@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import Vue2Autocomplete from "vue2-autocomplete-js";
+
 export default {
   components: {
     autocomplete: Vue2Autocomplete,
@@ -65,3 +67,5 @@ export default {
   },
 };
 </script>
+
+<style src="~/assets/styles/vue2-autocomplete.css" scoped></style>
