@@ -23,7 +23,7 @@ function checkAccess(file) {
 exports.initConfig = function(extConfig) {
   let fileConfig = {};
   try {
-    var configFilePath = path.resolve(__dirname, "../..", "config.json");
+    var configFilePath = path.resolve(__dirname, "../config.json");
     const configContents = fs.readFileSync(configFilePath, "utf8");
     console.log(`Found configuration file : ${configFilePath}`);
     try {
@@ -35,9 +35,9 @@ exports.initConfig = function(extConfig) {
     console.log(`No configuraton file found : ${configFilePath}`);
   }
   extConfig = extConfig || fileConfig;
-  config.database = path.resolve(__dirname, "../../", extConfig.database || "database");
-  config.imageFolder = path.resolve(__dirname, "../../", extConfig.imageFolder || "images");
-  config.thumbnailFolder = path.resolve(__dirname, "../../", extConfig.thumbnailFolder || "thumb");
+  config.database = path.resolve(__dirname, "./", extConfig.database || "database");
+  config.imageFolder = path.resolve(__dirname, "./", extConfig.imageFolder || "images");
+  config.thumbnailFolder = path.resolve(__dirname, "./", extConfig.thumbnailFolder || "thumb");
   config.port = extConfig.port || 3000;
   // Check access permissions
   if(!checkAccess(config.database)) {

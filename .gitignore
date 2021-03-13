@@ -1,7 +1,7 @@
 #
 # Project-specific
 #
-/config.json
+/modules/backend/config.json
 
 #
 # System

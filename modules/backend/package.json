@@ -1,9 +1,9 @@
 {
   "name": "@phanect/museum-backend",
   "version": "0.1.0",
-  "main": "src/js/server.js",
+  "main": "./server.js",
   "scripts": {
-    "start": "node --unhandled-rejections=strict src/js/server.js",
+    "start": "node --unhandled-rejections=strict ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
