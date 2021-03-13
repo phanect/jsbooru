@@ -38,7 +38,6 @@ menu.main li {
 
 #search,
 #image,
-#wiki,
 #upload {
   min-height: 75vh;
   margin: 10px 0 0;
@@ -59,7 +58,6 @@ menu.main li {
 
 /* Tags */
 #tags li { margin: 0; }
-#tags .wiki { margin-right: 10px; }
 #tags .name { margin-right: 5px; }
 #tags .post-count { font-size: 0.8em; }
 #tags ul {

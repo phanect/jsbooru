@@ -8,7 +8,6 @@ const collectionNames = {
   images: "pictures",
   tags: "tags",
   tagcounts: "tag_counts",
-  tagwiki: "tag_wiki",
 };
 
 exports.init = function() {
@@ -29,15 +28,10 @@ exports.init = function() {
         if(err) {
           throw new Error("Could not initialize tags database");
         }
-        db.createCollection(collectionNames.tagwiki, (err, tagwiki) => {
-          if(err) {
-            throw new Error("Could not initialize tag_wiki database");
-          }
-          exports.images = images;
-          exports.tags = tags;
-          exports.tagcounts = tagcounts;
-          exports.tagwiki = tagwiki;
-        });
+
+        exports.images = images;
+        exports.tags = tags;
+        exports.tagcounts = tagcounts;
       });
     });
   });
@@ -80,30 +74,6 @@ exports.insertPicture = function(pictureData) {
           reject(err); return;
         }
         resolve(result[0]._id);
-      });
-  });
-};
-
-/**
- * Insert a new tag in the database.
- *
- * @param {string} tagName - the tag name.
- * @param {string} wiki - the wki entry.
- * @returns {Promise<any>} a promise of the result.
- */
-exports.insertTagWiki = function(tagName, wiki) {
-  return new Promise((resolve, reject) => {
-    exports.tagwiki.insert(
-      {
-        name: tagName,
-        wiki: wiki,
-        score: 0,
-      },
-      (err, result) => {
-        if(err) {
-          reject(err); return;
-        }
-        resolve(result);
       });
   });
 };
@@ -163,31 +133,6 @@ exports.getTagCount = function(tagName) {
         }
         resolve(result && result.count);
       });
-  });
-};
-
-/**
- * Get the tag count for an unique tag.
- *
- * @param {string} tagName - the name of the tag to retrieve the count for.
- * @returns {Promise<number>} a promise on the count.
- */
-exports.getTagWiki = function(tagName) {
-  return new Promise((resolve, reject) => {
-    exports.tagwiki.find(
-      { name: tagName },
-      { author: 1, wiki: 1, score: 1 }
-    ).toArray((err, result) => {
-      if(err) {
-        reject(err);
-        return;
-      }
-      resolve(result.map(r => ({
-        author: r.author,
-        entry: r.count,
-        score: r.score,
-      })));
-    });
   });
 };
 
