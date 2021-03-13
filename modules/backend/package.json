@@ -1,5 +1,5 @@
 {
-  "name": "@phanect/museum",
+  "name": "@phanect/museum-backend",
   "version": "0.1.0",
   "main": "src/js/server.js",
   "scripts": {
