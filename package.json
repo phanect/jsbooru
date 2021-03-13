@@ -9,6 +9,9 @@
   "repository": {
     "url": "https://github.com/phanect/museum.git"
   },
+  "workspaces": [
+    "modules/*"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext=.js,.ts,.vue ."
@@ -17,6 +20,7 @@
   "devDependencies": {
     "@phanect/eslint-plugin": "latest",
     "eslint": "latest",
-    "eslint-plugin-nuxt": "latest"
+    "eslint-plugin-nuxt": "latest",
+    "lerna": "^4.0.0"
   }
 }
