@@ -7,34 +7,35 @@ const database = require("../database");
 const uuid = require("../utils").uuid;
 const thumb = require("../thumbnailer");
 
-function saveInDBAndRedirect(res, newFile, urlID, hash) {
+const saveInDBAndRedirect = async (res, newFile, urlID, hash) => {
   if(hash) {
     console.info(`Thumbnail hash : ${hash}`);
   }
-  return database.insertPicture(
-    hash
-      ? {
-        url: `/img/${newFile}`,
-        thumbnail: `/thumb/${urlID}.jpg`,
-        hash: hash,
-        tags: [],
-      }
-      : {
-        url: `/img/${newFile}`,
-        tags: [],
-      }
-  ).then((id) => {
+
+  try {
+    const id = await database.insertPicture(
+      hash
+        ? {
+          url: `/img/${newFile}`,
+          thumbnail: `/thumb/${urlID}.jpg`,
+          hash: hash,
+          tags: [],
+        }
+        : {
+          url: `/img/${newFile}`,
+          tags: [],
+        }
+    );
     console.info(`Assigned ID : ${id}`);
     res.redirect(`/#/view/${id}`);
-    return;
-  }).catch((e) => {
+  } catch (err) {
     console.error("Creating an ID for the new uploaded picture failed.");
-    console.error(e.message);
+    console.error(err.message);
     res.sendStatus(500);
-  });
-}
+  }
+};
 
-module.exports = function(req, res) {
+module.exports = async (req, res) => new Promise((resolve) => {
   console.info("--- Adding new file ---");
   req.pipe(req.busboy);
   req.busboy.on("file", (fieldname, file, filename) => {
@@ -45,14 +46,15 @@ module.exports = function(req, res) {
     console.info(`Added file : ${newFileAbsolute}`);
     const fstream = fs.createWriteStream(newFileAbsolute);
     file.pipe(fstream);
-    fstream.on("close", () => {
-      thumb.createThumbnail(newFileAbsolute)
-        .then((hash) =>
-          saveInDBAndRedirect(res, newFile, urlID, hash)
-        ).catch(() =>
-          saveInDBAndRedirect(res, newFile)
-        );
+    fstream.on("close", async () => {
+      try {
+        const hash = await thumb.createThumbnail(newFileAbsolute);
+        await saveInDBAndRedirect(res, newFile, urlID, hash);
+        resolve();
+      } catch (err) {
+        await saveInDBAndRedirect(res, newFile);
+        resolve();
+      }
     });
   });
-  return;
-};
+});

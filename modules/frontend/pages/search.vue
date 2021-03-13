@@ -30,54 +30,52 @@ export default {
 
   },
   watch: {
-    "$route.query.q": function(to, from) {
+    "$route.query.q": async function(to, from) {
       if (to !== from) {
-        this.init();
+        await this.init();
       }
     },
-    "$route.query.s": function(to, from) {
+    "$route.query.s": async function(to, from) {
       if (to !== from) {
-        this.init();
+        await this.init();
       }
     },
   },
-  created: function(to, from) {
-    this.init();
+  async created(to, from) {
+    await this.init();
   },
   methods: {
-    init: function() {
+    async init() {
       this.currTags = this.$route.query.q || "";
       this.pos = +(this.$route.query.s || "");
-      this.getItems();
+      await this.getItems();
     },
     async getItems() {
-      const self = this;
+      try {
+        const res = await fetch(`/api/image?s=${this.pos}&q=${this.currTags}`);
+        const { count, result, tags } = await res.json();
 
-      const res = await fetch(`/api/image?s=${this.pos}&q=${this.currTags}`);
-      await res.json()
-        .then(({ count, result, tags }) => {
-          self.count = count;
-          self.images = result.map((image) => ({
-            id: image._id,
-            link: "/view/" + image._id,
-            thumbnail: image.thumbnail || image.url,
-            tags: image.tags ? image.tags.join(" ") : "",
-          }));
-          self.tags = tags.sort((a, b) => {
-            const nameA = a.name;
-            const nameB = b.name;
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-            return 0;
-          });
-          return;
-        }).then(undefined, () => {
-          console.warn("Request failed on image list get");
+        this.count = count;
+        this.images = result.map((image) => ({
+          id: image._id,
+          link: "/view/" + image._id,
+          thumbnail: image.thumbnail || image.url,
+          tags: image.tags ? image.tags.join(" ") : "",
+        }));
+        this.tags = tags.sort((a, b) => {
+          const nameA = a.name;
+          const nameB = b.name;
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
         });
+      } catch (err) {
+        console.warn("Request failed on image list get");
+      }
     },
     setRequest: function(request) {
       this.currTags = request.trim();

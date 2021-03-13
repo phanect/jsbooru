@@ -2,27 +2,24 @@
 
 const database = require("../database");
 
-module.exports = function(req, res) {
-  database.getPictureData(req.params.id)
-    .then((data) =>
-      Promise.all(
-        data.tags.map(tag =>
-          database.getTagData(tag)
-            .then((data) =>
-              database.getTagCount(tag)
-                .then((count) => ({
-                  name: tag,
-                  type: data.type || "no-type",
-                  count: count,
-                }))
-            )
-        )
-      ).then((tags) => {
-        data.tags = tags;
-        res.send(data);
-      })
-    ).catch((e) => {
-      console.error(e.message);
-      res.sendStatus(500);
-    });
+module.exports = async (req, res) => {
+  try {
+    const data = await database.getPictureData(req.params.id);
+    const tags = await Promise.all(
+      data.tags.map(async (tag) => {
+        const data = await database.getTagData(tag);
+        const count = await database.getTagCount(tag);
+        return {
+          name: tag,
+          type: data.type || "no-type",
+          count: count,
+        };
+      }),
+    );
+    data.tags = tags;
+    res.send(data);
+  } catch (err) {
+    console.error(err.message);
+    res.sendStatus(500);
+  }
 };

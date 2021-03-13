@@ -10,40 +10,37 @@ function getUniqueTags(query) {
   return usTags.map(tag => encode(tag));
 }
 
-module.exports = function(req, res) {
+module.exports = async (req, res) => {
   const start = +req.query.s || 0;
   const uniqueTags = getUniqueTags(req.query.q);
 
-  database.getPicturesByTag(uniqueTags, start, 20)
-    .then((pics) =>
-      Promise.all(
-        pics.reduce((prev, curr) => prev.concat(curr.tags), [])
-          .filter((i, idx, arr) => arr.indexOf(i) === idx)
-          .map(tag =>
-            database.getTagData(tag)
-              .then((data) =>
-                database.getTagCount(tag)
-                  .then((count) => ({
-                    name: tag,
-                    type: data.type || "no-type",
-                    count: count,
-                  }))
-              )
-          )
-      ).then((tags) => database
-        .getCountByTagList(uniqueTags)
-        .then((count) => {
-          res.send({
+  try {
+    const pics = await database.getPicturesByTag(uniqueTags, start, 20);
+
+    const tags = await Promise.all(
+      pics
+        .reduce((prev, curr) => prev.concat(curr.tags), [])
+        .filter((i, idx, arr) => arr.indexOf(i) === idx)
+        .map(async (tag) => {
+          const data = await database.getTagData(tag);
+          const count = await database.getTagCount(tag);
+          return {
+            name: tag,
+            type: data.type || "no-type",
             count: count,
-            result: pics,
-            tags: tags,
-          });
-          return;
+          };
         })
-      )
-    ).catch((e) => {
-      console.error(`Getting the images from the tag list ${uniqueTags} failed.`);
-      console.error(e.message);
-      res.sendStatus(500);
+    );
+
+    const count = await database.getCountByTagList(uniqueTags);
+    res.send({
+      count: count,
+      result: pics,
+      tags: tags,
     });
+  } catch(err) {
+    console.error(`Getting the images from the tag list ${uniqueTags} failed.`);
+    console.error(err.message);
+    res.sendStatus(500);
+  }
 };

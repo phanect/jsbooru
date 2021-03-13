@@ -2,13 +2,15 @@
 
 const database = require("../database");
 
-module.exports = function(req, res) {
+module.exports = async (req, res) => {
   const imageID = req.params.id;
-  database.deletePicture(imageID)
-    .then(_ => { res.sendStatus(200); })
-    .catch((e) => {
-      console.error(`[Error] Deleting the image ${imageID} failed.`);
-      console.error(e.message);
-      res.sendStatus(500);
-    });
+
+  try {
+    await database.deletePicture(imageID);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(`[Error] Deleting the image ${imageID} failed.`);
+    console.error(err.message);
+    res.sendStatus(500);
+  }
 };

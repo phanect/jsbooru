@@ -2,18 +2,17 @@
 
 const database = require("../database");
 
-module.exports = function(req, res) {
+module.exports = async (req, res) => {
   const imageID = req.params.id;
   const tagName = req.params.tagname;
-  database.insertTagOnPicture(imageID, tagName)
-    .then(() => database.updateTagCount(tagName))
-    .then(() => {
-      res.sendStatus(200);
-      return;
-    })
-    .catch((e) => {
-      console.error(`Adding tag ${tagName} on picture ${imageID} failed.`);
-      console.error(e.message);
-      res.sendStatus(500);
-    });
+
+  try {
+    await database.insertTagOnPicture(imageID, tagName);
+    await database.updateTagCount(tagName);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(`Adding tag ${tagName} on picture ${imageID} failed.`);
+    console.error(err.message);
+    res.sendStatus(500);
+  }
 };

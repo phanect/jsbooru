@@ -2,16 +2,16 @@
 
 const database = require("../database");
 
-module.exports = function(req, res) {
-  database.insertPicture({
-    url: req.body.url,
-    tags: [],
-  }).then(() => {
+module.exports = async (req, res) => {
+  try {
+    await database.insertPicture({
+      url: req.body.url,
+      tags: [],
+    });
     res.sendStatus(200);
-    return;
-  }).catch((e) => {
+  } catch (err) {
     console.error(`Creating a new picture from the url ${req.body.url} failed.`);
-    console.error(e.message);
+    console.error(err.message);
     res.sendStatus(500);
-  });
+  }
 };

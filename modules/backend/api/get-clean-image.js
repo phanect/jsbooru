@@ -4,12 +4,14 @@ const database = require("../database");
 const fs = require("mz/fs");
 const config = require("../config").config;
 
-module.exports = function(req, res) {
-  Promise.all([
-    database.getPictures(),
-    fs.readdir(config.imageFolder),
-    fs.readdir(config.thumbnailFolder),
-  ]).then((results) => {
+module.exports = async (req, res) => {
+  try {
+    const results = await Promise.all([
+      database.getPictures(),
+      fs.readdir(config.imageFolder),
+      fs.readdir(config.thumbnailFolder),
+    ]);
+
     const pictures = results[0];
     const files = results[1].filter(f => f !== ".gitignore");
     const thumbnails = results[2].filter(f => f !== ".gitignore");
@@ -28,11 +30,9 @@ module.exports = function(req, res) {
       unmatchedThumbnails,
       noThumb: nonCreatedThumbnails.length,
     });
-
-    return;
-  }).catch((e) => {
+  } catch(err) {
     console.error("Getting the GET clean data failed.");
-    console.error(e.message);
+    console.error(err.message);
     res.sendStatus(500);
-  });
+  }
 };

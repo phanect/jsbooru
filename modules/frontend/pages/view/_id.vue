@@ -33,42 +33,38 @@ export default {
       }
     },
   },
-  created: function(to, from) {
-    this.init();
+  async created(to, from) {
+    await this.init();
   },
   methods: {
-    init: function() {
+    async init() {
       this.id = this.$route.params.id;
-      this.selectImage();
+      await this.selectImage();
     },
     async selectImage() {
-      const self = this;
-      const res = await fetch(`/api/image/${this.id}`);
+      try {
+        const res = await fetch(`/api/image/${this.id}`);
 
-      await res.json()
-        .then((image) => {
-          self.image = image;
-          self.tags = image.tags.sort((a, b) => {
-            const nameA = a.name.toUpperCase();
-            const nameB = b.name.toUpperCase();
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-            return 0;
-          });
-          return;
-        }).then(undefined, (error) => {
-          console.warn(error);
+        this.image = await res.json();
+        this.tags = this.image.tags.sort((a, b) => {
+          const nameA = a.name.toUpperCase();
+          const nameB = b.name.toUpperCase();
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
         });
+      } catch(error) {
+        console.warn(error);
+      }
     },
     setRequest: function(request) {
       this.$router.push("/search?q=" + request);
     },
-    addTag: function(tags) {
-      const self = this;
+    async addTag(tags) {
       const tag = tags.trim().split(" ").pop();
       if(confirm("Add the tag '" + tag + "' to this picture ?")) {
         await fetch(`/api/image/${this.id}/${tag}`, {
@@ -77,43 +73,37 @@ export default {
         this.selectImage();
       }
     },
-    deleteTag: function(tagName) {
-      const self = this;
+    async deleteTag(tagName) {
       if(confirm("Delete the tag '" + tagName + "' from this picture ?")) {
-        fetch(`/api/image/${this.id}/#{tagName}`, {
+        await fetch(`/api/image/${this.id}/#{tagName}`, {
           method: "DELETE",
-        }).then((reply) => {
-          self.selectImage();
-          return;
         });
+        this.selectImage();
       }
     },
-    editRating: function(value) {
+    async editRating(value) {
       if (confirm("Set the rating to '" + value + "' ?")) {
-        this.setImageValue("rating", value);
+        await this.setImageValue("rating", value);
       }
     },
-    editUser: function(value) {
+    async editUser(value) {
       if (confirm("Set the uploader to '" + value + "' ?")) {
-        this.setImageValue("user", value);
+        await this.setImageValue("user", value);
       }
     },
-    editSource: function(value) {
+    async editSource(value) {
       if (confirm("Set the source to '" + value + "' ?")) {
-        this.setImageValue("source", value);
+        await this.setImageValue("source", value);
       }
     },
-    setImageValue: function(name, value) {
-      const self = this;
+    async setImageValue(name, value) {
       const data = {};
       data[name] = value;
-      fetch("/api/image/" + this.id, {
+      await fetch("/api/image/" + this.id, {
         method: "POST",
         body: JSON.stringify(data),
-      }).then((reply) => {
-        self.selectImage();
-        return;
       });
+      this.selectImage();
     },
     toggleSizeLimit: function() {
       this.limitSize = !this.limitSize;
