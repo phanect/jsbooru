@@ -10,7 +10,4 @@ Vue.http.options.root = "/api";
 
 const app = new Vue({
   router: router,
-  data: {
-    title: "JSBooru",
-  },
 }).$mount("#app");

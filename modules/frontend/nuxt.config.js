@@ -1,5 +1,6 @@
 export default {
   head: {
+    title: "Museum ― a package manager for assets",
     htmlAttrs: {
       lang: "en",
     },
