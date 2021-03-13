@@ -63,7 +63,7 @@ export default {
         });
     },
     setRequest: function(request) {
-      router.push("/search?q=" + request);
+      this.$router.push("/search?q=" + request);
     },
     addTag: function(tags) {
       const self = this;

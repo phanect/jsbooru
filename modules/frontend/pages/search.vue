@@ -86,7 +86,7 @@ export default {
       this.goTo();
     },
     goTo: function() {
-      router.push("/search?q=" + this.currTags);
+      this.$router.push("/search?q=" + this.currTags);
     },
   },
 };
