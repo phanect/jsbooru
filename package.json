@@ -1,13 +1,19 @@
 {
-  "name": "jsbooru",
+  "name": "@phanect/museum",
   "version": "0.1.0",
-  "description": "A Danbooru-style board made entirely in Jfor NodeJS",
+  "description": "A package manager for assets",
+  "author": "Jumpei Ogawa <phanective@gmail.com>",
+  "contributors": [
+    "DexesTTP (https://github.com/Dexesttp)"
+  ],
+  "repository": {
+    "url": "https://github.com/phanect/museum.git"
+  },
   "main": "src/js/server.js",
   "scripts": {
     "start": "node src/js/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "DexesTTP",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.16.0",
@@ -18,9 +24,6 @@
     "jimp": "^0.2.27",
     "mz": "^2.6.0",
     "tingodb": "^0.5.1"
-  },
-  "repository": {
-    "url": "https://github.com/Dexesttp/jsbooru.git"
   },
   "devDependencies": {
     "eslint": "^3.14.1"
