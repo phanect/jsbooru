@@ -41,12 +41,14 @@ export default {
       this.id = this.$route.params.id;
       this.selectImage();
     },
-    selectImage: function() {
+    async selectImage() {
       const self = this;
-      this.$http.get("image/" + this.id)
-        .then((response) => {
-          self.image = response.body;
-          self.tags = response.body.tags.sort((a, b) => {
+      const res = await fetch(`/api/image/${this.id}`);
+
+      await res.json()
+        .then((image) => {
+          self.image = image;
+          self.tags = image.tags.sort((a, b) => {
             const nameA = a.name.toUpperCase();
             const nameB = b.name.toUpperCase();
             if (nameA < nameB) {
@@ -69,20 +71,21 @@ export default {
       const self = this;
       const tag = tags.trim().split(" ").pop();
       if(confirm("Add the tag '" + tag + "' to this picture ?")) {
-        this.$http.post("image/" + this.id + "/" + tag)
-          .then((reply) => {
-            self.selectImage();
-          });
+        await fetch(`/api/image/${this.id}/${tag}`, {
+          method: "POST",
+        });
+        this.selectImage();
       }
     },
     deleteTag: function(tagName) {
       const self = this;
       if(confirm("Delete the tag '" + tagName + "' from this picture ?")) {
-        this.$http.delete("image/" + this.id + "/" + tagName)
-          .then((reply) => {
-            self.selectImage();
-            return;
-          });
+        fetch(`/api/image/${this.id}/#{tagName}`, {
+          method: "DELETE",
+        }).then((reply) => {
+          self.selectImage();
+          return;
+        });
       }
     },
     editRating: function(value) {
@@ -104,11 +107,13 @@ export default {
       const self = this;
       const data = {};
       data[name] = value;
-      this.$http.post("image/" + this.id, data)
-        .then((reply) => {
-          self.selectImage();
-          return;
-        });
+      fetch("/api/image/" + this.id, {
+        method: "POST",
+        body: JSON.stringify(data),
+      }).then((reply) => {
+        self.selectImage();
+        return;
+      });
     },
     toggleSizeLimit: function() {
       this.limitSize = !this.limitSize;

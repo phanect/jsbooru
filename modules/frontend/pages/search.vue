@@ -50,18 +50,20 @@ export default {
       this.pos = +(this.$route.query.s || "");
       this.getItems();
     },
-    getItems: function() {
+    async getItems() {
       const self = this;
-      this.$http.get("image", { params: { s: this.pos, q: this.currTags }})
-        .then((response) => {
-          self.count = response.body.count;
-          self.images = response.body.result.map((image) => ({
+
+      const res = await fetch(`/api/image?s=${this.pos}&q=${this.currTags}`);
+      await res.json()
+        .then(({ count, result, tags }) => {
+          self.count = count;
+          self.images = result.map((image) => ({
             id: image._id,
             link: "/view/" + image._id,
             thumbnail: image.thumbnail || image.url,
             tags: image.tags ? image.tags.join(" ") : "",
           }));
-          self.tags = response.body.tags.sort((a, b) => {
+          self.tags = tags.sort((a, b) => {
             const nameA = a.name;
             const nameB = b.name;
             if (nameA < nameB) {
@@ -73,7 +75,7 @@ export default {
             return 0;
           });
           return;
-        }).then(undefined, (response) => {
+        }).then(undefined, () => {
           console.warn("Request failed on image list get");
         });
     },

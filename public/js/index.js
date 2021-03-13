@@ -6,8 +6,6 @@ const router = new VueRouter({
   ],
 });
 
-Vue.http.options.root = "/api";
-
 const app = new Vue({
   router: router,
 }).$mount("#app");
