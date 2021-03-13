@@ -1,6 +1,22 @@
-"use strict";
+<template>
+  <section id="searchbox">
+    <h2>Search</h2>
+    <autocomplete
+      url="/api/tags"
+      params="q"
+      anchor="result"
+      :min="1"
+      :process="processData"
+      :debounce="250"
+      :template="formatData"
+      :initValue="current"
+      :on-select="getData">
+    </autocomplete>
+  </section>
+</template>
 
-Vue.component("search-box", {
+<script>
+export default {
   components: {
     autocomplete: Vue2Autocomplete,
   },
@@ -31,5 +47,5 @@ Vue.component("search-box", {
       this.$emit("select", tag.result);
     },
   },
-  template: "#searchbox-template",
-});
+};
+</script>

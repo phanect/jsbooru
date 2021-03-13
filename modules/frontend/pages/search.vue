@@ -1,6 +1,21 @@
-"use strict";
 
-const Search = Vue.component("main-search", {
+<template>
+  <div id="content">
+    <section id="search">
+      <h2>{{count}} results</h2>
+      <page-box :pageCount="20" :start="pos" :count="count" :currTags="currTags" />
+      <image-thumbnail v-for="image in images" :image="image" />
+      <page-box :pageCount="20" :start="pos" :count="count" :currTags="currTags" />
+    </section>
+    <aside>
+      <search-box @select="setRequest" :current="currTags"></search-box>
+      <sidebar-tags @select="addTag" :tags="tags"></sidebar-tags>
+    </aside>
+  </div>
+</template>
+
+<script>
+export default {
   data: function() {
     return {
       currTags: "",
@@ -74,5 +89,5 @@ const Search = Vue.component("main-search", {
       router.push("/search?q=" + this.currTags);
     },
   },
-  template: "#search-template",
-});
+};
+</script>

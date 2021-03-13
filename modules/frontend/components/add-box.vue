@@ -1,6 +1,21 @@
-"use strict";
+<template>
+  <section id="addbox">
+    <h2>Add tag</h2>
+    <autocomplete
+      url="/api/tags"
+      params="q"
+      anchor="result"
+      :process="processData"
+      :min="1"
+      :debounce="250"
+      :template="formatData"
+      :on-select="getData">
+    </autocomplete>
+  </section>
+</template>
 
-Vue.component("add-box", {
+<script>
+export default {
   components: {
     autocomplete: Vue2Autocomplete,
   },
@@ -48,8 +63,5 @@ Vue.component("add-box", {
       this.$emit("select", tag.result);
     },
   },
-
-  template: "#addbox-template",
-
-
-});
+};
+</script>

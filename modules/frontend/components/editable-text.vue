@@ -1,6 +1,17 @@
-"use strict";
+<template>
+  <div class="editable-text">{{title}}
+    <input type="text" v-if="isEdited && !allowedEntries" v-model="currentValue" @keyup.enter="endEdit" />
+    <select v-if="isEdited && allowedEntries" v-model="currentValue">
+      <option v-for="entry in allowedEntries">{{entry}}</option>
+    </select>
+    <a v-if="value && !isEdited" :href="url">{{value}}</a>
+    <a v-if="!value && !isEdited">{{unknown}}</a>
+    <a class="edit" v-if="canEdit && !isEdited" @click="startEdit">(edit)</a>
+  </div>
+</template>
 
-Vue.component("editable-text", {
+<script>
+export default {
   props: {
     title: {
       type: String,
@@ -52,6 +63,5 @@ Vue.component("editable-text", {
       this.$emit("edit", this.currentValue);
     },
   },
-
-  template: "#editable-text-template",
-});
+};
+</script>

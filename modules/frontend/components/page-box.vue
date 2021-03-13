@@ -1,6 +1,17 @@
-"use strict";
+<template>
+  <nav class="pages">
+    <ul>
+      <li v-for="page in pages" :class="{ selected: page.selected }">
+        <router-link :to="'/search?s=' + page.value + '&q=' + currTags">
+          {{page.identifier}}
+        </router-link>
+      </li>
+    </ul>
+  </nav>
+</template>
 
-Vue.component("page-box", {
+<script>
+export default {
   props: {
     start: {
       default: 0,
@@ -33,5 +44,5 @@ Vue.component("page-box", {
       return array;
     },
   },
-  template: "#pagebox-template",
-});
+};
+</script>

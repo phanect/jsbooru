@@ -1,6 +1,23 @@
-"use strict";
+<template>
+  <div id="content">
+    <section id="image">
+      <img v-if="image" :src="image.url" :class="{ limit: limitSize }" @click="toggleSizeLimit" />
+    </section>
+    <aside>
+      <search-box @select="setRequest"></search-box>
+      <sidebar-tags @select="setRequest" @delete="deleteTag" :tags="tags" :allowDelete="true"></sidebar-tags>
+      <add-box @select="addTag"></add-box>
+      <image-data v-if="image" :image="image"
+        @editRating="editRating"
+        @editUser="editUser"
+        @editSource="editSource">
+      </image-data>
+    </aside>
+  </div>
+</template>
 
-const View = Vue.component("main-view", {
+<script>
+export default {
   data: function() {
     return {
       id: "",
@@ -97,6 +114,5 @@ const View = Vue.component("main-view", {
       this.limitSize = !this.limitSize;
     },
   },
-
-  template: "#view-template",
-});
+};
+</script>

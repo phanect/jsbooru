@@ -1,6 +1,22 @@
-"use strict";
+<template>
+  <article
+    class="post-preview"
+    itemscope
+    itemtype="http://schema.org/ImageObject"
+    :id="'post_' + image.id"
+    :data-id="image.id">
+    <router-link :to="'/view/' + image.id">
+      <img
+        itemprop="thumbnailUrl"
+        :src="image.thumbnail"
+        :alt="image.tags"
+        :title="image.tags" />
+    </router-link>
+  </article>
+</template>
 
-Vue.component("image-thumbnail", {
+<script>
+export default {
   props: {
     image: Object,
   },
@@ -9,5 +25,5 @@ Vue.component("image-thumbnail", {
       this.$emit("select", String(this.image.id));
     },
   },
-  template: "#thumbnail-template",
-});
+};
+</script>
