@@ -11,7 +11,7 @@
         </menu>
       </nav>
     </header>
-    <router-view></router-view>
+    <Nuxt />
     <footer id="footer">
       <div>
         Powered by <a href="//github.com/dexesttp/jsbooru">JSBooru</a>
@@ -22,5 +22,8 @@
 
 <script>
 export default {
+  data: () => ({
+    title: "Museum",
+  }),
 };
 </script>
