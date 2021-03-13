@@ -43,3 +43,7 @@ yarn.lock
 
 # ESLint
 .eslintcache
+
+# Nuxt
+.nuxt/
+/modules/frontend/dist/

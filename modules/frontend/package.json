@@ -1,0 +1,14 @@
+{
+  "name": "@phanect/museum-frontend",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "start": "nuxt start",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "nuxt": "^2.14.12"
+  }
+}
