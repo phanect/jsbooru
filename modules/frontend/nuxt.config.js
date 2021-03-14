@@ -17,4 +17,7 @@ export default {
     "~/assets/styles/style.css",
     "~/assets/styles/theme.css",
   ],
+  server: {
+    port: 3002,
+  },
 };

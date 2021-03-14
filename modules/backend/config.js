@@ -7,7 +7,7 @@ const config = {
   database: resolve(__dirname, "./database"),
   imageFolder: resolve(__dirname, "./images"),
   thumbnailFolder: resolve(__dirname, "./thumb"),
-  port: 8000,
+  port: 3001,
 };
 
 

@@ -13,6 +13,7 @@
     "modules/*"
   ],
   "scripts": {
+    "dev": "node ./scripts/dev.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext=.js,.ts,.vue ."
   },
@@ -21,6 +22,7 @@
     "@phanect/eslint-plugin": "latest",
     "eslint": "latest",
     "eslint-plugin-nuxt": "latest",
-    "lerna": "^4.0.0"
+    "lerna": "^4.0.0",
+    "redbird": "^0.10.0"
   }
 }
