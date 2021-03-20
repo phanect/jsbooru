@@ -4,7 +4,7 @@
     <section id="search">
       <h2>{{count}} results</h2>
       <page-box :pageCount="20" :start="pos" :count="count" :currTags="currTags" />
-      <image-thumbnail v-for="image in images" :image="image" />
+      <image-thumbnail v-for="image in images" :key="image.url" :image="image" />
       <page-box :pageCount="20" :start="pos" :count="count" :currTags="currTags" />
     </section>
     <aside>
