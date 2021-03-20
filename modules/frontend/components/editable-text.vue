@@ -1,12 +1,15 @@
 <template>
-  <div class="editable-text">{{title}}
-    <input type="text" v-if="isEdited && !allowedEntries" v-model="currentValue" @keyup.enter="endEdit" />
+  <div class="editable-text">
+    {{ title }}
+    <input v-if="isEdited && !allowedEntries" v-model="currentValue" type="text" @keyup.enter="endEdit">
     <select v-if="isEdited && allowedEntries" v-model="currentValue">
-      <option v-for="entry in allowedEntries">{{entry}}</option>
+      <option v-for="entry in allowedEntries">
+        {{ entry }}
+      </option>
     </select>
-    <a v-if="value && !isEdited" :href="url">{{value}}</a>
-    <a v-if="!value && !isEdited">{{unknown}}</a>
-    <a class="edit" v-if="canEdit && !isEdited" @click="startEdit">(edit)</a>
+    <a v-if="value && !isEdited" :href="url">{{ value }}</a>
+    <a v-if="!value && !isEdited">{{ unknown }}</a>
+    <a v-if="canEdit && !isEdited" class="edit" @click="startEdit">(edit)</a>
   </div>
 </template>
 

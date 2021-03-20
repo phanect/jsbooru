@@ -2,8 +2,8 @@
   <div id="content">
     <section id="upload">
       <form action="/api/image" method="post" enctype="multipart/form-data">
-        <input type="file" name="image" />
-        <input type="submit" value="upload" />
+        <input type="file" name="image">
+        <input type="submit" value="upload">
       </form>
     </section>
     <aside>

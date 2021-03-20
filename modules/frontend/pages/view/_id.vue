@@ -1,17 +1,18 @@
 <template>
   <div id="content">
     <section id="image">
-      <img v-if="image" :src="image.url" :class="{ limit: limitSize }" @click="toggleSizeLimit" />
+      <img v-if="image" :src="image.url" :class="{ limit: limitSize }" @click="toggleSizeLimit">
     </section>
     <aside>
-      <search-box @select="setRequest"></search-box>
-      <sidebar-tags @select="setRequest" @delete="deleteTag" :tags="tags" :allowDelete="true"></sidebar-tags>
-      <add-box @select="addTag"></add-box>
-      <image-data v-if="image" :image="image"
+      <search-box @select="setRequest" />
+      <sidebar-tags :tags="tags" :allowDelete="true" @select="setRequest" @delete="deleteTag" />
+      <add-box @select="addTag" />
+      <image-data
+        v-if="image" :image="image"
         @editRating="editRating"
         @editUser="editUser"
-        @editSource="editSource">
-      </image-data>
+        @editSource="editSource"
+      />
     </aside>
   </div>
 </template>

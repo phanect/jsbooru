@@ -2,14 +2,14 @@
 <template>
   <div id="content">
     <section id="search">
-      <h2>{{count}} results</h2>
+      <h2>{{ count }} results</h2>
       <page-box :pageCount="20" :start="pos" :count="count" :currTags="currTags" />
       <image-thumbnail v-for="image in images" :key="image.url" :image="image" />
       <page-box :pageCount="20" :start="pos" :count="count" :currTags="currTags" />
     </section>
     <aside>
-      <search-box @select="setRequest" :current="currTags"></search-box>
-      <sidebar-tags @select="addTag" :tags="tags"></sidebar-tags>
+      <search-box :current="currTags" @select="setRequest" />
+      <sidebar-tags :tags="tags" @select="addTag" />
     </aside>
   </div>
 </template>

@@ -3,10 +3,10 @@
     <h2>Tags</h2>
     <ul>
       <li v-for="tag in tags">
-        <router-link :class="['name', 'tag', tag.type]"  :to="'/search?q=' + tag.name">
-          {{tag.name}}
+        <router-link :class="['name', 'tag', tag.type]" :to="'/search?q=' + tag.name">
+          {{ tag.name }}
         </router-link>
-        <span :class="['post-count', 'tag', tag.type]">{{tag.count}}</span>
+        <span :class="['post-count', 'tag', tag.type]">{{ tag.count }}</span>
         <a v-if="allowDelete" class="delete" @click="deleteTag(tag.name)">-</a>
       </li>
     </ul>

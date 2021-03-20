@@ -10,8 +10,8 @@
       :debounce="250"
       :template="formatData"
       :initValue="current"
-      :on-select="getData">
-    </autocomplete>
+      :on-select="getData"
+    />
   </section>
 </template>
 

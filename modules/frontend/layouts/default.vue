@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header id="header">
-      <h1>{{title}}</h1>
+      <h1>{{ title }}</h1>
       <nav>
         <menu class="main">
           <ul>

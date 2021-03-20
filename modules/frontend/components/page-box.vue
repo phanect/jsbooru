@@ -3,7 +3,7 @@
     <ul>
       <li v-for="page in pages" :class="{ selected: page.selected }">
         <router-link :to="'/search?s=' + page.value + '&q=' + currTags">
-          {{page.identifier}}
+          {{ page.identifier }}
         </router-link>
       </li>
     </ul>
