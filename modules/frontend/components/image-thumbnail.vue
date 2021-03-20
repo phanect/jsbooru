@@ -5,14 +5,14 @@
     itemscope
     itemtype="http://schema.org/ImageObject"
     :data-id="image.id">
-    <router-link :to="'/view/' + image.id">
+    <NuxtLink :to="'/view/' + image.id">
       <img
         itemprop="thumbnailUrl"
         :src="image.thumbnail"
         :alt="image.tags"
         :title="image.tags"
       >
-    </router-link>
+    </NuxtLink>
   </article>
 </template>
 

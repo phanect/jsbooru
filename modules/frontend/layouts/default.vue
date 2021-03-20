@@ -5,8 +5,16 @@
       <nav>
         <menu class="main">
           <ul>
-            <li><router-link to="/search">Posts</router-link></li>
-            <li><router-link to="/upload">Upload</router-link></li>
+            <li>
+              <NuxtLink to="/search">
+                Posts
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink to="/upload">
+                Upload
+              </NuxtLink>
+            </li>
           </ul>
         </menu>
       </nav>

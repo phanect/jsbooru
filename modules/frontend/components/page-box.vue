@@ -2,9 +2,9 @@
   <nav class="pages">
     <ul>
       <li v-for="page in pages" :class="{ selected: page.selected }">
-        <router-link :to="'/search?s=' + page.value + '&q=' + currTags">
+        <NuxtLink :to="'/search?s=' + page.value + '&q=' + currTags">
           {{ page.identifier }}
-        </router-link>
+        </NuxtLink>
       </li>
     </ul>
   </nav>
