@@ -27,7 +27,7 @@ const saveInDBAndRedirect = async (res, newFile, urlID, hash) => {
         }
     );
     console.info(`Assigned ID : ${id}`);
-    res.redirect(`/#/view/${id}`);
+    res.redirect(`/view/${id}`);
   } catch (err) {
     console.error("Creating an ID for the new uploaded picture failed.");
     console.error(err.message);
