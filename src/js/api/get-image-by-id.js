@@ -22,7 +22,6 @@ module.exports = function(req, res) {
         res.send(data);
       })
     ).catch((e) => {
-      console.error(`Getting the data from the picture ${imageID} failed.`);
       console.error(e.message);
       res.sendStatus(500);
     });
