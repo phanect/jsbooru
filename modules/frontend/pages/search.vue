@@ -15,6 +15,26 @@
 </template>
 
 <script>
+import { getEndpoint } from "~/libs/utils.js";
+
+const getItems = async (pos, currTags) => {
+  const url = `${getEndpoint()}/api/image?s=${pos}&q=${currTags}`;
+  console.info(`GET: ${url}`);
+  const res = await fetch(url);
+  const { count, tags, result } = await res.json();
+
+  return {
+    count,
+    tags,
+    images: result.map((image) => ({
+      id: image._id,
+      link: "/view/" + image._id,
+      thumbnail: image.thumbnail || image.url,
+      tags: image.tags ? image.tags.join(" ") : "",
+    })),
+  };
+};
+
 export default {
   data: function() {
     return {
@@ -26,47 +46,39 @@ export default {
       loaded: false,
     };
   },
-  computed: {
+  async fetch() {
+    const { route, error } = this.$nuxt.context;
 
+    try {
+      this.currTags = route.query.q || "";
+      this.pos = +(route.query.s || "");
+
+      const { count, tags, images } = await getItems(this.pos, this.currTags);
+
+      this.count = count;
+      this.tags = tags;
+      this.images = images;
+    } catch (err) {
+      console.error(err);
+      error({
+        statusCode: 500,
+        message: "Sorry, something technically wrong.",
+      });
+    }
   },
   watch: {
     "$route.query.q": async function(to, from) {
       if (to !== from) {
-        await this.init();
+        await this.$fetch();
       }
     },
     "$route.query.s": async function(to, from) {
       if (to !== from) {
-        await this.init();
+        await this.$fetch();
       }
     },
-  },
-  async created(to, from) {
-    await this.init();
   },
   methods: {
-    async init() {
-      this.currTags = this.$route.query.q || "";
-      this.pos = +(this.$route.query.s || "");
-      await this.getItems();
-    },
-    async getItems() {
-      try {
-        const res = await fetch(`/api/image?s=${this.pos}&q=${this.currTags}`);
-        const { count, result, tags } = await res.json();
-
-        this.count = count;
-        this.images = result.map((image) => ({
-          id: image._id,
-          link: "/view/" + image._id,
-          thumbnail: image.thumbnail || image.url,
-          tags: image.tags ? image.tags.join(" ") : "",
-        }));
-        this.tags = tags;
-      } catch (err) {
-        console.warn("Request failed on image list get");
-      }
-    },
     setRequest: function(request) {
       this.currTags = request.trim();
       this.goTo();

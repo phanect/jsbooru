@@ -18,38 +18,35 @@
 </template>
 
 <script>
+import { getEndpoint } from "~/libs/utils.js";
+
 export default {
+  async asyncData({ route, error }) {
+    const res = await fetch(`${getEndpoint()}/api/image/${route.params.id}`);
+
+    if (res.status === 200) {
+      return {
+        id: route.params.id,
+        image: await res.json(),
+      }
+    } else if (res.status === 404) {
+      error({
+        statusCode: 404,
+        message: "The file is not found.",
+      });
+    } else {
+      error({
+        statusCode: 500,
+        message: "Sorry, something technically wrong.",
+      });
+    }
+  },
   data: function() {
     return {
-      id: "",
-      image: null,
       limitSize: true,
     };
   },
-  watch: {
-    $route: function(to, from) {
-      if (from !== to) {
-        this.init();
-      }
-    },
-  },
-  async created(to, from) {
-    await this.init();
-  },
   methods: {
-    async init() {
-      this.id = this.$route.params.id;
-      await this.selectImage();
-    },
-    async selectImage() {
-      try {
-        const res = await fetch(`/api/image/${this.id}`);
-
-        this.image = await res.json();
-      } catch(error) {
-        console.warn(error);
-      }
-    },
     setRequest: function(request) {
       this.$router.push("/search?q=" + request);
     },
