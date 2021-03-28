@@ -11,7 +11,7 @@
   },
   "main": "src/js/server.js",
   "scripts": {
-    "start": "node src/js/server.js",
+    "start": "node --unhandled-rejections=strict src/js/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext=.js,.ts,.vue ."
   },
