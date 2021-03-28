@@ -5,7 +5,7 @@
     </section>
     <aside>
       <search-box @select="setRequest" />
-      <sidebar-tags :tags="tags" :allowDelete="true" @select="setRequest" @delete="deleteTag" />
+      <sidebar-tags :tags="image.tags" :allowDelete="true" @select="setRequest" @delete="deleteTag" />
       <add-box @select="addTag" />
       <image-data
         v-if="image" :image="image"
@@ -23,7 +23,6 @@ export default {
     return {
       id: "",
       image: null,
-      tags: [],
       limitSize: true,
     };
   },
@@ -47,17 +46,6 @@ export default {
         const res = await fetch(`/api/image/${this.id}`);
 
         this.image = await res.json();
-        this.tags = this.image.tags.sort((a, b) => {
-          const nameA = a.name.toUpperCase();
-          const nameB = b.name.toUpperCase();
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          return 0;
-        });
       } catch(error) {
         console.warn(error);
       }

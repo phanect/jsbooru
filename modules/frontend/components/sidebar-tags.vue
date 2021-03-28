@@ -2,7 +2,7 @@
   <section id="tags">
     <h2>Tags</h2>
     <ul>
-      <li v-for="tag in tags">
+      <li v-for="tag in tags" :key="tag.name">
         <NuxtLink :class="['name', 'tag', tag.type]" :to="'/search?q=' + tag.name">
           {{ tag.name }}
         </NuxtLink>

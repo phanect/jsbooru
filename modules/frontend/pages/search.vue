@@ -62,17 +62,7 @@ export default {
           thumbnail: image.thumbnail || image.url,
           tags: image.tags ? image.tags.join(" ") : "",
         }));
-        this.tags = tags.sort((a, b) => {
-          const nameA = a.name;
-          const nameB = b.name;
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          return 0;
-        });
+        this.tags = tags;
       } catch (err) {
         console.warn("Request failed on image list get");
       }
