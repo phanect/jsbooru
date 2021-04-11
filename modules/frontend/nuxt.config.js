@@ -12,6 +12,7 @@ export default {
   },
 
   components: true,
+  modern: "client",
 
   css: [
     "~/assets/styles/style.css",
