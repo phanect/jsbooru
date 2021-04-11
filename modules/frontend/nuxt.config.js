@@ -14,6 +14,14 @@ export default {
   components: true,
   modern: "client",
 
+  build: {
+    babel: {
+      presets(_, [ preset, options ]) {
+        options.polyfills = [];
+      },
+    },
+  },
+
   css: [
     "~/assets/styles/style.css",
     "~/assets/styles/theme.css",
