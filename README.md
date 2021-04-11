@@ -2,9 +2,11 @@
 
 A package manager for assets
 
-## License
+## License & Credits
 
-This project is MIT. You can do with it as you like.
+Licensed under MIT license.
 
-Note that any board made with the JSBooru project isn't necessarily endorsed by the JSBooru team.  
-Because the project is MIT, we can't even disallow them to use our codebase, so don't bother to ask.
+This project includes source code derived from:
+
+- [JSBooru](https://github.com/Dexesttp/jsbooru) (MIT)
+- [cross-env](https://github.com/kentcdodds/cross-env) (MIT)
