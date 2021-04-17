@@ -9,7 +9,7 @@
     "build": "nuxt build"
   },
   "dependencies": {
-    "nuxt": "^2.14.12",
-    "vue2-autocomplete-js": "^0.2.2"
+    "nuxt": "2.15.4",
+    "vue2-autocomplete-js": "0.2.2"
   }
 }

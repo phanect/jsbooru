@@ -22,7 +22,7 @@
     "@phanect/eslint-plugin": "latest",
     "eslint": "latest",
     "eslint-plugin-nuxt": "latest",
-    "lerna": "^4.0.0",
-    "redbird": "^0.10.0"
+    "lerna": "4.0.0",
+    "redbird": "0.10.0"
   }
 }
