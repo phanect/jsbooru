@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "node ./scripts/dev.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext=.js,.ts,.vue ."
+    "lint": "eslint --ext=.js,.ts,.vue . && renovate-config-validator"
   },
   "license": "MIT",
   "devDependencies": {
@@ -23,6 +23,7 @@
     "eslint": "latest",
     "eslint-plugin-nuxt": "latest",
     "lerna": "^4.0.0",
-    "redbird": "^0.10.0"
+    "redbird": "^0.10.0",
+    "renovate": "^24.116.2"
   }
 }
