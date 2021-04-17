@@ -1,0 +1,21 @@
+{
+  "name": "@phanect/museum-backend",
+  "version": "0.1.0",
+  "main": "./server.js",
+  "scripts": {
+    "dev": "npm start",
+    "start": "node --unhandled-rejections=strict ./main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "busboy": "^0.2.14",
+    "connect-busboy": "0.0.2",
+    "express": "^4.14.0",
+    "html-entities": "^1.2.0",
+    "jimp": "^0.2.27",
+    "mz": "^2.6.0",
+    "tingodb": "^0.5.1"
+  }
+}
