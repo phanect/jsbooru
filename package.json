@@ -24,6 +24,6 @@
     "eslint-plugin-nuxt": "latest",
     "lerna": "^4.0.0",
     "redbird": "^0.10.0",
-    "renovate": "^24.116.2"
+    "renovate": "^25.0.0"
   }
 }
